@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'authors',
     'users',
+    'todo',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,27 @@ CORS_ALLOWED_ORIGINS = [
    "http://localhost:3000",
     "http://10.8.0.2:3000",
 ]
+
+# module: rest_framework
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES': [
+#         'rest_framework.renderers.JSONRenderer',
+#         'rest_framework.renderers.AdminRenderer',
+#         'rest_framework.renderers.BrowsableAPIRenderer',
+#     ]
+# }
+
+# REST_FRAMEWORK = {
+#
+#     'DEFAULT_RENDERER_CLASSES': (
+#         'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+#         'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
+#     ),
+#
+#     'DEFAULT_PARSER_CLASSES': (
+#         # If you use MultiPartFormParser or FormParser, we also have a camel case version
+#         'djangorestframework_camel_case.parser.CamelCaseFormParser',
+#         'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
+#         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+#     ),
+# }

@@ -7,6 +7,7 @@ class Project(models.Model):
     class Meta:
         verbose_name = 'проект'
         verbose_name_plural = 'проекты'
+        ordering = ['-id']
 
     def __str__(self):
         return self.name
@@ -21,11 +22,12 @@ class Todo(models.Model):
     class Meta:
         verbose_name = 'заметка'
         verbose_name_plural = 'заметки'
+        ordering = ['-id']
 
     def __str__(self):
         return f'{self.create_at} {self.text[:10]}'
 
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='проект')
     text = models.TextField(verbose_name='текст', blank=False)
     create_at = models.DateTimeField(verbose_name='создано', auto_now_add=True)
     update_at = models.DateTimeField(verbose_name='обновлено', auto_now=True)

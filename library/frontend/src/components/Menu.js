@@ -1,14 +1,16 @@
 import React from 'react'
+import {Link} from "react-router-dom";
 
 const MenuContent = () => {
     return (
-        <div>
+        <nav>
             <ul>
-                <li><a href="#authors">Authors</a></li>
-                <li><a href="#users">Users</a></li>
-                <li><a href="#about">About</a></li>
+                <li><Link to='/'>Главная</Link></li>
+                <li><Link to='/projects'>Список проектов</Link></li>
+                <li><Link to='/todos'>Список заметок</Link></li>
+                <li><Link to='/users'>Пользователи</Link></li>
             </ul>
-        </div>
+        </nav>
     )
 }
 

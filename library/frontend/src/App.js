@@ -1,10 +1,14 @@
 import React from 'react';
 import axios from "axios";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import './App.css';
-import AuthorList from "./components/Author";
+import ProjectList from "./components/Project";
 import UserList from "./components/User";
 import FooterContent from "./components/Footer";
 import MenuContent from "./components/Menu";
+import MainPage from "./components/Main";
+import NotFound from "./components/NotFound";
+import ToDos from "./components/ToDos";
 
 class App extends React.Component {
     constructor(props) {
@@ -12,6 +16,8 @@ class App extends React.Component {
         this.state = {
             'authors': [],
             'users': [],
+            'projects': [],
+            'todos': [],
         }
     }
 
@@ -53,32 +59,48 @@ class App extends React.Component {
                     }
                 )
             }).catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:8000/api/projects/')
+            .then(response => {
+                const projects = response.data.results
+                // console.log(projects)
+                this.setState(
+                    {
+                        'projects': projects
+                    }
+                )
+            }).catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:8000/api/project_todos/')
+            .then(response => {
+                const todos = response.data.results
+                this.setState(
+                    {
+                        'todos': todos
+                    }
+                )
+            }).catch(error => console.log(error))
+
     }
 
 
     render() {
 
         return (
-            <div>
-                <div>
-                    <MenuContent/>
-                </div>
+            <BrowserRouter>
+                <MenuContent/>
+                <main>
+                    <Routes>
+                        <Route path='/' element={<MainPage />} />
+                        <Route path='/projects/*' element={<ProjectList projects={this.state.projects} todos={this.state.todos} />} />
+                        <Route path='/todos' element={<ToDos todos={this.state.todos}/>} />
+                        <Route path='/users' element={<UserList users={this.state.users}/>} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </main>
 
-                <div className="App-header">
-                    <p><a name="authors"></a>Authors List</p>
-                    <AuthorList authors={this.state.authors}/>
-                </div>
-
-                <div className="App-header">
-                    <p><a name="users"></a>Users List</p>
-                    <UserList users={this.state.users}/>
-                </div>
-
-                <div className="App">
-                    <a name="about"></a>
-                    <FooterContent/>
-                </div>
-            </div>
+                <FooterContent/>
+            </BrowserRouter>
 
         )
     }

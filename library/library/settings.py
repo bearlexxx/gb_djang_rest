@@ -138,6 +138,7 @@ CORS_ALLOWED_ORIGINS = [
    "http://localhost:3000",
     "http://10.8.0.2:3000",
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # module: rest_framework
 # REST_FRAMEWORK = {

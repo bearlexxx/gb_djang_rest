@@ -4,14 +4,15 @@ from users.models import User
 from users.serializers import UserModelSerializer
 
 
-# class UserModelViewSet(ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserModelSerializer
+class UserModelViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserModelSerializer
 
 
 class UserCustomViewSet(mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         mixins.ListModelMixin,
                         GenericViewSet):
-    queryset = User.objects.all()
+    # queryset = User.objects.all()
+    queryset = User.objects.get_queryset().order_by('-id')
     serializer_class = UserModelSerializer

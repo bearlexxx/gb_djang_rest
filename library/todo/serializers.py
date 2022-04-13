@@ -14,6 +14,8 @@ class ProjectModelSerializer(ModelSerializer):
 
 # class TodoModelSerializer(HyperlinkedModelSerializer):
 class TodoModelSerializer(ModelSerializer):
+    project = ProjectModelSerializer()
+
     class Meta:
         model = Todo
         fields = '__all__'

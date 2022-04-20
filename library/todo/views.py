@@ -24,7 +24,7 @@ class ProjectModelViewSet(ModelViewSet):
 
 
 class TodoModelViewSet(ModelViewSet):
-    queryset = Todo.objects.all()
+    queryset = Todo.objects.filter(is_active=True)
     # queryset = Todo_.objects.get_queryset().order_by('-id')
     # serializer_class = TodoModelSerializer
     pagination_class = TodoPageNumberPagination

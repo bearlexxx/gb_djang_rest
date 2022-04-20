@@ -1,6 +1,6 @@
 import React from "react";
 
-const ToDoItem = ({todo}) => {
+const ToDoItem = ({todo, deleteTodoItem}) => {
    return (
        <tr>
            <td>
@@ -9,12 +9,17 @@ const ToDoItem = ({todo}) => {
            <td>
                {todo.user}
            </td>
+           <td>
+                <button onClick={()=>deleteTodoItem(todo.id)} type='button'>Удалить</button>
+            </td>
        </tr>
    )
 }
 
-const ToDotList = ({todos}) => {
-   return (
+const ToDotList = ({todos, deleteTodoItem, is_authenticated}) => {
+    const authenticated = is_authenticated();
+
+    return (
 
        <table className="App-header">
             <thead>
@@ -28,8 +33,9 @@ const ToDotList = ({todos}) => {
             </tr>
             </thead>
            <tbody>
-           {todos.map((todo) => <ToDoItem todo={todo} />)}
+                {todos.map((todo) => <ToDoItem todo={todo} deleteTodoItem={deleteTodoItem}/>)}
            </tbody>
+           {authenticated ? <a href='/todos/create/'>Создать заметку</a> : ''}
        </table>
    )
 }

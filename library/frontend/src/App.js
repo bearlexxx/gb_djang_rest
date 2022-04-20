@@ -11,6 +11,8 @@ import MainPage from "./components/Main";
 import NotFound from "./components/NotFound";
 import ToDos from "./components/ToDos";
 import LoginForm from "./components/Auth";
+import TodoForm from "./components/TodoForm";
+import ProjectForm from "./components/ProjectForm";
 
 class App extends React.Component {
     constructor(props) {
@@ -144,6 +146,47 @@ class App extends React.Component {
 
     }
 
+    deleteProjectItem(id) {
+//        const headers = this.get_headers()
+//        axios.delete('http://127.0.0.1:8000/api/projects/${id}/', {headers})
+//            .then(response => {
+//                this.setState({projects: this.state.projects.filter((item) => item.id !== id)})
+//            }).catch(error => console.log(error))
+    }
+
+    createProjectItem(name, link, user) {
+        const headers = this.get_headers()
+        const data = {name: name, link: link, users: user};
+        axios.post('http://127.0.0.1:8000/api/projects/', data, {headers})
+            .then(response => {
+                this.setState({projects: [...this.state.projects, response.data]});
+            }).catch(error => console.log(error))
+
+    }
+
+    deleteTodoItem(id) {
+//        const headers = this.get_headers()
+//        axios.delete('http://127.0.0.1:8000/api/project_todos/${id}/', {headers})
+//            .then(response => {
+//                this.setState({todos: this.state.todos.filter((item) => item.id !== id)})
+//            }).catch(error => console.log(error))
+    }
+
+    createTodoItem(text, project, user) {
+        const headers = this.get_headers()
+        const data = {text: text, project: project, user: user};
+        axios.post('http://127.0.0.1:8000/api/project_todos/', data, {headers})
+            .then(response => {
+                let new_todo = response.data;
+                const project_obj = this.state.projects.filter((item) => item.id === new_todo.project)[0];
+                new_todo.project = project_obj;
+                this.setState({todos: [new_todo, ...this.state.todos]});
+
+            }).catch(error => console.log(error))
+
+    }
+
+
     componentDidMount() {
         this.get_token_from_storage()
     }
@@ -155,9 +198,20 @@ class App extends React.Component {
                 <MenuContent is_authenticated={() => this.is_authenticated()} logout={() => this.logout()} auth_login={this.state.auth_login}/>
                 <main>
                     <Routes>
-                        <Route path='/' element={<MainPage />} />
-                        <Route path='/projects/*' element={<ProjectList projects={this.state.projects} todos={this.state.todos} />} />
-                        <Route path='/todos' element={<ToDos todos={this.state.todos}/>} />
+                       <Route path='/' element={<MainPage />} />
+                        <Route path='/projects/*' element={<ProjectList projects={this.state.projects}
+                            todos={this.state.todos} deleteProjectItem={(id) => this.deleteProjectItem(id)}
+                            is_authenticated={() => this.is_authenticated()}/>}
+                        />
+                        <Route path='/projects/create' element={<ProjectForm users={this.state.users} is_authenticated={() => this.is_authenticated()}
+                            createProjectItem={(text, project, user) => this.createProjectItem(text, project, user)}/>}
+                        />
+                        <Route path='/todos' element={<ToDos todos={this.state.todos}
+                            deleteTodoItem={(id) => this.deleteTodoItem(id)} is_authenticated={() => this.is_authenticated()}/>}
+                        />
+                        <Route path='/todos/create' element={<TodoForm projects={this.state.projects} users={this.state.users}
+                            is_authenticated={() => this.is_authenticated()} createTodoItem={(name, link, user) => this.createTodoItem(name, link, user)}/>}
+                        />
                         <Route path='/users' element={<UserList users={this.state.users}/>} />
                         <Route path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)}
                             is_authenticated={() => this.is_authenticated()} />}/>
